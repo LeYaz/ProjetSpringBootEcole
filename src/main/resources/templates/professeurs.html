@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headerload :: load">
+  	<title th:text="'Gestion Des Profs'"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+  </head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+ 
+    <div class="container">
+	 <table th:unless="${action == 'ModifierProf'}">
+	 <thead>
+	 	<tr>
+	 	<th>Id</th>
+	 	<th>Nom</th>
+	 	<th>Prénom</th>
+	 	<th>Date Naissance</th>
+	 	<th>Adresse</th>
+	 	<th>Sexe</th>
+	 	<th>Supprimer</th>
+	 	</tr>
+	 </thead>
+	 <tbody>
+	 	<tr th:each="prof : ${listeprof}">
+	 		<td >
+	 		<a	th:href="@{/afficherModifierProf/{id}(id=${prof.id})}" th:text="${prof.id}"></a></td>
+	 		<td th:text="${prof.nom}"/>
+	 		<td th:text="${prof.prenom}"/>
+	 		<td th:text="${prof.datenaissance}"/>
+	 		<td th:text="${prof.adresse}"/>
+	 		<td th:text="${prof.sexe}"/>
+	 		<td >
+	 		<a th:href="@{/SupprimerProf/{id}(id=${prof.id})}" th:text="'Supprimer'"></a></td>
+	 	</tr>
+	 </tbody>
+ </table>
+ 
+ <h2 th:if="${action == 'ModifierProf'}">
+ <a	th:href="@{/afficherCreerProf}" th:text="'Formulaire de Mofication'"></a>
+ </h2>
+ <h2 th:unless="${action == 'ModifierProf'}">Formulaire d'Ajout</h2>
+ 
+ <div>
+	  <form action="#" th:action="@{/{action}(action=${action})}" 
+	  th:object="${profform}"   method="post">
+	  		<input type="hidden" th:field="*{id}" th:value="*{id}"/>
+	    	<label for="nom">Nom</label>
+	   		<input type="text" th:field="*{nom}" id="nom" placeholder="nom"/>
+	   		<label for="prenom">Prénom</label>
+	   		<input type="text" th:field="*{prenom}" id="prenom" 
+	   		placeholder="prénom"/>
+	   		<label for="date">Date de Naissance</label>
+	   		<input type="date" th:field="*{datenaissance}" id="date" 
+	   		placeholder="Date de Naissance"/>
+	   		<label for="adresse">Adresse</label>
+	   		<input type="text" th:field="*{adresse}" id="adresse" 
+	   		placeholder="adresse"/>
+	   		<label for="genre">Sexe</label>
+	   		<input type="text" th:field="*{sexe}" id="genre" 
+	   		placeholder="sexe (HOMME ou FEMME)"/>
+	   <button  type="submit">Valider</button>
+	</form>
+ </div>
+ <div th:replace="fragments/footer :: footer"></div>
+    </div>
+    </body>
+</html>

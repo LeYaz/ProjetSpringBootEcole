@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head 
+th:replace="fragments/headerload :: load">
+  	<title th:text="'Gestion Des Classes'"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+ </head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+ 
+    <div class="container">
+	 <table th:unless="${action == 'ModifierClasse'}">
+	 <thead>
+	 	<tr>
+	 	<th>Id</th>
+	 	<th>Nom</th>
+	 	<th>Prof</th>
+	 	<th>Supprimer</th>
+	 	</tr>
+	 </thead>
+	 <tbody>
+	 	<tr th:each="classe : ${listeclasse}">
+	 		<td >
+	 		<a	th:href="@{/afficherModifierClasse/{id}(id=${classe.id})}" 
+	 		th:text="${classe.id}"></a></td>
+	 		<td th:text="${classe.nom}"/>
+	 		<td th:text="${classe.prof.nom}"/>
+	 		<td >
+	 		<a th:href="@{/SupprimerClasse/{id}(id=${classe.id})}" 
+	 		th:text="'Supprimer'"></a></td>
+	 	</tr>
+	 </tbody>
+ </table>
+ 
+ <h2 th:if="${action == 'ModifierClasse'}">
+ <a	th:href="@{/afficherCreerClasse}" th:text="'Formulaire de Mofication'"></a>
+ </h2>
+ <h2 th:unless="${action == 'ModifierClasse'}">Formulaire d'Ajout</h2>
+ 
+ <div>
+	  <form action="#" th:action="@{/{action}(action=${action})}" 
+	  th:object="${classeform}"   method="post">
+	  		<input type="hidden" th:field="*{id}" th:value="*{id}"/>
+	    	<label for="nom">Nom</label>
+	   		<input type="text" th:field="*{nom}" id="nom" placeholder="nom"/>
+	   		<select th:field="*{prof}">
+			    <option th:each="pprof :${listeprof}" 
+			    	th:value="${pprof.id}" th:utext="${pprof.nom}"/>
+			</select>
+	   <button  type="submit">Valider</button>
+	</form>
+ </div>
+ <div th:replace="fragments/footer :: footer"></div>
+    </div>
+    </body>
+</html>

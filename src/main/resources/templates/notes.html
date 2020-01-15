@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headerload :: load">
+  	<title th:text="'Gestion Des Elèves'"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+  </head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+ 
+    <div class="container">
+    <table th:unless="${action == 'ModifierNote'}">
+	 <thead>
+	 	<tr>
+	 	<th>Id</th>
+	 	<th>Date de saisise</th>
+	 	<th>Eleve</th>
+	 	<th>Classe</th>
+	 	<th>Matière</th>
+	 	<th>Professeur</th>
+	 	<th>Trimestre</th>
+	 	<th>Note</th>
+	 	<th>Avis</th>
+	 	<th>Avancement</th>
+	 	</tr>
+	 </thead>
+	 <tbody>
+	 	<tr th:each="note : ${listenote}">
+	 		<td >
+	 		<a	th:href="@{/afficherModifierNote/{id}(id=${note.id})}" th:text="${note.id}"></a></td>
+	 		<td th:text="${note.date_saisie}"/>
+	 		<td th:text="${note.eleve.nom}"/>
+	 		<td th:text="${note.classe.nom}"/>
+	 		<td th:text="${note.matiere.nom}"/>
+	 		<td th:text="${note.professeur.nom}"/>
+	 		<td th:text="${note.idtrimestre}"/>
+	 		<td th:text="${note.note}"/>
+	 		<td th:text="${note.avis}"/>
+	 		<td th:text="${note.avancement}"/>
+	 		
+	 		<td >
+	 		<a th:href="@{/SupprimerNote/{id}(id=${note.id})}" th:text="'Supprimer'"></a></td>
+	 	</tr>
+	 </tbody>
+ </table>
+ 
+  <h2 th:if="${action == 'ModifierNote'}">
+ <a	th:href="@{/afficherCreerNote}" th:text="'Formulaire de Modification'"></a>
+ </h2>
+ <h2 th:unless="${action == 'ModifierNote'}">Formulaire d'Ajout</h2>
+ 
+ <div>
+	  <form action="#" th:action="@{/{action}(action=${action})}" 
+	  th:object="${noteform}"   method="post">
+	  		<input type="hidden" th:field="*{id}" th:value="*{id}"/>
+	    	<label for="date_saisie">Date de saisie</label>
+	   		<input type="text" th:field="*{date_saisie}" id="date_saisie" placeholder="date_saisie"/>
+	   		
+	   		<select th:field="*{eleve}">
+			    <option th:each="peleve :${listeeleve}" 
+			    	th:value="${peleve.id}" th:utext="${peleve.nom}"/>
+			</select>
+			<select th:field="*{classe}">
+			    <option th:each="pclasse :${listeclasse}" 
+			    	th:value="${pclasse.id}" th:utext="${pclasse.nom}"/>
+			</select>
+			<select th:field="*{matiere}">
+			    <option th:each="pmatiere :${listematiere}" 
+			    	th:value="${pmatiere.id}" th:utext="${pmatiere.nom}"/>
+			</select>
+			<select th:field="*{professeur}">
+			    <option th:each="pprofesseur :${listeprofesseur}" 
+			    	th:value="${pprofesseur.id}" th:utext="${pprofesseur.nom}"/>
+			</select>
+		
+	   		<input type="hidden" th:field="*{idtrimestre}" th:value="*{idtrimestre}"/>
+	   		
+	   		<label for="note">Note</label>
+	   		<input type="text" th:field="*{note}" id="note" 
+	   		placeholder="Note"/>
+	   		
+	   		<label for="avis">Avis</label>
+	   		
+	   		
+	   		.
+	   		<input type="text" th:field="*{avis}" id="avis" 
+	   		placeholder="avis"/>
+	   		<label for="avancement">Avancement</label>
+	   		<input type="text" th:field="*{avancement}" id="avancement" 
+	   		placeholder="avancement"/>
+	   <button  type="submit">Valider</button>
+	</form>
+ </div>
+
+
+ <div th:replace="fragments/footer :: footer"></div>
+    </div>
+    </body>
+</html>

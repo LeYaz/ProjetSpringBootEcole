@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headerload :: load">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title th:text="Gestion des matieres"></title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+
+<table th:unless="${action == 'ModifierMatiere'}">
+	 <thead>
+	 	<tr>
+	 	<th>Id</th>
+	 	<th>Nom</th>
+	 	<th>Supprimer</th>
+	 	</tr>
+	 </thead>
+	 <tbody>
+	 	<tr th:each="matiere : ${matieres}">
+	 		<td >
+	 		<a	th:href="@{/afficherModifierMatiere/{id}(id=${matiere.id})}" 
+	 		th:text="${matiere.id}"></a></td>
+	 		<td th:text="${matiere.nom}"/>
+	 		<td >
+	 		<a th:href="@{/SupprimerMatiere/{id}(id=${matiere.id})}" 
+	 		th:text="'Supprimer'"></a></td>
+	 	</tr>
+	 </tbody>
+ </table>
+ 
+ <h2 th:if="${action == 'ModifierMatiere'}">
+ <a	th:href="@{/afficherCreerMatiere}" th:text="'Formulaire de Modification'"></a>
+ </h2>
+ <h2 th:unless="${action == 'ModifierMatiere'}">Formulaire d'Ajout</h2>
+ 
+ <div>
+	  <form action="#" th:action="@{/{action}(action=${action})}" 
+	  th:object="${matiereform}"   method="post">
+	  		<input type="hidden" th:field="*{id}" th:value="*{id}"/>
+	    	<label for="nom">Nom</label>
+	   		<input type="text" th:field="*{nom}" id="nom" placeholder="nom"/>
+	   		
+	   <button  type="submit">Valider</button>
+	</form>
+ </div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</div>
+</body>
+</html>
